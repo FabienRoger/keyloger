@@ -19,9 +19,10 @@ import io
 # timestamps and keys are stored separately for better compression
 key_logs = ([], [])  # (timestamps, keys)
 mouse_logs = ([], [])  # (timestamps, mouse events)
+folder = __file__.rsplit(os.sep, 1)[0]
 
 # Load the public key
-with open("public_key.pem", "rb") as key_file:
+with open(os.path.join(folder, "public_key.pem"), "rb") as key_file:
     public_key = serialization.load_pem_public_key(key_file.read(), backend=default_backend())
 
 
@@ -84,7 +85,6 @@ def process_and_save_logs():
     )
 
     # Save the encrypted AES key and the encrypted data to a file
-    folder = __file__.rsplit(os.sep, 1)[0]
     os.makedirs(os.path.join(folder, "logs"), exist_ok=True)
     encrypted_filename = os.path.join(folder, "logs", f"{timestamp}.log")
     with open(encrypted_filename, "wb") as file:
